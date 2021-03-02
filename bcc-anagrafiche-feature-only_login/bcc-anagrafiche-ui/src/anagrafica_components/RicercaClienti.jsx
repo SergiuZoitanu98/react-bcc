@@ -135,14 +135,12 @@ export class RicercaClienti extends Component {
             <h3>Non Confermato!</h3>
           </Modal.Header>
           <Modal.Body>
-            {this.state.clients.length > 0 && (
-              <div className="row">
-                <UnconfirmedModalBody
-                  checkClient={this.checkClient}
-                  clients={this.state.clients[0]}
-                />
-              </div>
-            )}
+            <div className="row">
+              <UnconfirmedModalBody
+                checkClient={this.checkClient}
+                client={this.state.selectedClient}
+              />
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleModalUnconfirmed}>
