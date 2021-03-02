@@ -5,6 +5,8 @@ class UserForm extends Component {
     clientDetails: [],
     clients: [],
     handleRicerca: this.props.handleRicerca,
+    handleRicercaFiliali: this.props.handleRicercaFiliali,
+    filiali: [],
   };
   handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ class UserForm extends Component {
                 name="branch"
               >
                 <option hidden>Seleziona Filiale</option>
-                <option value="1">One</option>
+                <option value="1">one</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </select>
@@ -43,7 +45,7 @@ class UserForm extends Component {
             <div className="col-3 ">
               <input
                 name="nag"
-                value={clientDetails.nag}
+                value={clientDetails.nag || ""}
                 onChange={this.handleChange}
                 placeholder="NAG"
                 type="text"
@@ -52,7 +54,7 @@ class UserForm extends Component {
             </div>
             <div className="col-3 ">
               <input
-                value={clientDetails.nome}
+                value={clientDetails.nome || ""}
                 onChange={this.handleChange}
                 name="nome"
                 placeholder="Nome"
@@ -62,7 +64,7 @@ class UserForm extends Component {
             </div>
             <div className="col-3 ">
               <input
-                value={clientDetails.dataNascita}
+                value={clientDetails.dataNascita || ""}
                 onChange={this.handleChange}
                 type="date"
                 name="dataNascita"

@@ -5,7 +5,6 @@ class UserTable extends Component {
     checkClient: this.props.checkClient,
   };
   render() {
-    console.log(this.state);
     return (
       <table className="table">
         <thead>
@@ -20,7 +19,7 @@ class UserTable extends Component {
         <tbody>
           {this.state.clients.map((client) => {
             return (
-              <tr>
+              <tr key={client.id}>
                 <th scope="row">{client.cab}</th>
                 <td>{client.nag}</td>
                 <td>{client.nome}</td>

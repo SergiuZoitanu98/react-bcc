@@ -14,6 +14,7 @@ export class RicercaClienti extends Component {
     modalUnconfirmed: false,
     clients: [],
     selectedClient: null,
+    filiali: [],
   };
 
   handleRicerca = (data) => {
@@ -55,7 +56,6 @@ export class RicercaClienti extends Component {
   };
 
   handleUnconfirmed = () => {
-    console.log("clicked");
     this.setState({ modalAlreadyConfirmed: this.state.modalAlreadyConfirmed });
   };
 
@@ -77,78 +77,82 @@ export class RicercaClienti extends Component {
   };
   render() {
     return (
-      <div id="main">
-        <Navbar></Navbar>
-        <UserForm handleRicerca={this.handleRicerca} />
+      <>
+        <div id="main">
+          <Navbar></Navbar>
+          <h3 className=" mt-2">RICERCA CLIENTI</h3>
+          <UserForm handleRicerca={this.handleRicerca} />
 
-        {this.state.clients.length > 0 && (
-          <div className="row">
-            <UserTable
-              checkClient={this.checkClient}
-              clients={this.state.clients}
-            />
-          </div>
-        )}
-
-        <Modal
-          show={this.state.modalAlreadyConfirmed}
-          onHide={this.handleModalAlreadyConfirmed}
-        >
-          <Modal.Header>
-            {" "}
-            <h3>Attenzione!</h3>
-          </Modal.Header>
-          <Modal.Body>
-            <p>
-              L'anagrafica del cliente è già stata confermata in data:
-              <b>
-                {this.state.selectedClient &&
-                  this.state.selectedClient.filiali.lastModify}
-              </b>
-            </p>
-            <p>
-              Il codice identificativo assegnato è:
-              <b>
-                {" "}
-                {this.state.selectedClient && this.state.selectedClient.codice}
-              </b>
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={this.handleModalAlreadyConfirmed}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        {/*unconfirmed*/}
-
-        <Modal
-          show={this.state.modalUnconfirmed}
-          onHide={this.handleModalUnconfirmed}
-        >
-          <Modal.Header>
-            {" "}
-            <h3>Non Confermato!</h3>
-          </Modal.Header>
-          <Modal.Body>
+          {this.state.clients.length > 0 && (
             <div className="row">
-              <UnconfirmedModalBody
+              <UserTable
                 checkClient={this.checkClient}
-                client={this.state.selectedClient}
+                clients={this.state.clients}
               />
             </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleModalUnconfirmed}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+          )}
+
+          <Modal
+            show={this.state.modalAlreadyConfirmed}
+            onHide={this.handleModalAlreadyConfirmed}
+          >
+            <Modal.Header>
+              {" "}
+              <h3>Attenzione!</h3>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                L'anagrafica del cliente è già stata confermata in data:
+                <b>
+                  {this.state.selectedClient &&
+                    this.state.selectedClient.filiali.lastModify}
+                </b>
+              </p>
+              <p>
+                Il codice identificativo assegnato è:
+                <b>
+                  {" "}
+                  {this.state.selectedClient &&
+                    this.state.selectedClient.codice}
+                </b>
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={this.handleModalAlreadyConfirmed}
+              >
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          {/*unconfirmed*/}
+
+          <Modal
+            show={this.state.modalUnconfirmed}
+            onHide={this.handleModalUnconfirmed}
+          >
+            <Modal.Header>
+              {" "}
+              <h3>Non Confermato!</h3>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="row">
+                <UnconfirmedModalBody
+                  checkClient={this.checkClient}
+                  client={this.state.selectedClient}
+                />
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleModalUnconfirmed}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      </>
     );
   }
 }
