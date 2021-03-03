@@ -14,6 +14,7 @@ export class RicercaClienti extends Component {
     modalUnconfirmed: false,
     clients: [],
     selectedClient: null,
+    checked: false,
     filiali: [],
   };
 
@@ -38,6 +39,7 @@ export class RicercaClienti extends Component {
         //da togliere stati duplicati
         this.setState({ clients: [] });
         this.setState({ clients: response.data });
+        console.log(this.state.clients);
       })
       .catch((error) => {
         // handle error
@@ -75,6 +77,7 @@ export class RicercaClienti extends Component {
       this.setState({ modalUnconfirmed: true });
     }
   };
+
   render() {
     return (
       <>

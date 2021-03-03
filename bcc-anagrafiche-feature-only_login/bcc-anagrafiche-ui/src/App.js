@@ -56,7 +56,7 @@ class App extends Component {
         if(roles.length === 1 && roles[0].authority === USER_TYPE.USER){
           this.props.history.replace(window.defConfigurations.url_prefix + ROUTES.RICERCA_CLIENTI);
         } else {
-          this.props.history.replace(window.defConfigurations.url_prefix + ROUTES.IMPORTA_CLIENTI);
+          this.props.history.replace(window.defConfigurations.url_prefix + ROUTES.RICERCA_CLIENTI);
         }
      }
     )

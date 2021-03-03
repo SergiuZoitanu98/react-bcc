@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import axios from "axios";
+import config from "../config.json";
 
 class UserForm extends Component {
   state = {
     clientDetails: [],
     clients: [],
     handleRicerca: this.props.handleRicerca,
-    handleRicercaFiliali: this.props.handleRicercaFiliali,
     filiali: [],
   };
   handleSubmit = async (e) => {
@@ -23,8 +24,23 @@ class UserForm extends Component {
     clientDetails[input.name] = input.value;
     this.setState({ clientDetails });
   };
+
+  componentDidMount = () => {
+    const jwt = localStorage.getItem("TOKEN");
+    const conf = {
+      headers: {
+        Authorization: jwt,
+      },
+    };
+    axios.get(config.apiFilialiEndpoint, conf).then((response) => {
+      this.setState({ filiali: response.data });
+      console.log(response.data);
+    });
+  };
+
   render() {
     const { clientDetails } = this.state;
+
     return (
       <div className="container-fluid mt-4 mb-4 ">
         <div className="row">
@@ -32,14 +48,13 @@ class UserForm extends Component {
             <div className="col-3 bootstrap-select-wrapper ">
               <select
                 className="form-control "
-                value={clientDetails.branch}
                 onChange={this.handleChange}
                 name="branch"
               >
                 <option hidden>Seleziona Filiale</option>
-                <option value="1">one</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {this.state.filiali.map((filiale) => {
+                  return <option value={filiale.id}>{filiale.nome}</option>;
+                })}
               </select>
             </div>
             <div className="col-3 ">
