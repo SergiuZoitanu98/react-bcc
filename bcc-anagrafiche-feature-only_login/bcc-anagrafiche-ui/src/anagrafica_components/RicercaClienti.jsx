@@ -10,6 +10,7 @@ export class RicercaClienti extends Component {
   state = {
     modalDetailsVisible: false,
     modalDetailsUncofirmed: false,
+    confirmCheckModalShow: false,
     modalAlreadyConfirmed: false,
     modalUnconfirmed: false,
     clients: [],
@@ -78,6 +79,37 @@ export class RicercaClienti extends Component {
     }
   };
 
+  handleChange = (input, isCheckbox) => {
+    const client = { ...this.state.selectedClient };
+    console.log(input.name);
+    if (isCheckbox) {
+      client[input.name] = input.checked;
+    } else {
+      client[input.name] = input.value;
+    }
+    console.log(client);
+    this.setState({ selectedClient: client });
+  };
+
+  handleConfirmCheckModal = () => {
+    this.setState({ confirmCheckModalShow: !this.state.confirmCheckModalShow });
+  };
+
+  handleConfirm = () => {
+    axios
+      .post(config.apiPostCliente, this.state.selectedClient, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("TOKEN"),
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+      });
+  };
   render() {
     return (
       <>
@@ -142,15 +174,126 @@ export class RicercaClienti extends Component {
             </Modal.Header>
             <Modal.Body>
               <div className="row">
-                <UnconfirmedModalBody
-                  checkClient={this.checkClient}
-                  client={this.state.selectedClient}
-                />
+                {this.state.selectedClient && (
+                  <form action={this.handleSubmit}>
+                    <div className="container-fluid">
+                      <h5>NAG</h5>
+                      <p>{this.state.selectedClient.nag}</p>
+                      <h5>Nome di battesimo</h5>
+                      <p> {this.state.selectedClient.nome}</p>
+                      <h5>Data di nascita</h5>
+                      <p> {this.state.selectedClient.dataNascita}</p>
+
+                      <div className="form-check form-check-wrapper">
+                        <input
+                          className="form-check-input "
+                          type="text"
+                          value={this.state.selectedClient.telefono}
+                          id="telefono"
+                          name="telefono"
+                          onChange={(e) => {
+                            this.handleChange(e.currentTarget);
+                          }}
+                        />
+                        <label className="form-check-label" htmlFor="telefono">
+                          <h5>Numero di telefono</h5>
+                          {this.state.selectedClient.telefono}
+                        </label>
+                      </div>
+                      <br />
+                      <div className="form-check form-check-wrapper">
+                        <input
+                          className="form-check-input"
+                          type="email"
+                          value={this.state.selectedClient.email}
+                          id="email"
+                          name="email"
+                          onChange={(e) => {
+                            this.handleChange(e.currentTarget);
+                          }}
+                        />
+
+                        <label className="form-check-label" htmlFor="email">
+                          <h5>Email</h5>
+                          {this.state.selectedClient.email}
+                        </label>
+                      </div>
+                      <br />
+                      <h5>Privacy</h5>
+                      {[1, 2, 3, 4, 5, 6, 7].map((privacyNumber) => {
+                        return (
+                          <div
+                            key={privacyNumber}
+                            className="form-check form-check-wrapper"
+                          >
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              id={`id-${privacyNumber}`}
+                              name={`p${privacyNumber}`}
+                              checked={
+                                this.state.selectedClient[`p${privacyNumber}`]
+                                  ? "checked"
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                this.handleChange(e.currentTarget, true);
+                              }}
+                            />
+                            <label className="form-check-label" htmlFor="p1">
+                              Privacy {privacyNumber}
+                            </label>
+                          </div>
+                        );
+                      })}
+                      <br />
+                    </div>
+                  </form>
+                )}
               </div>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleModalUnconfirmed}>
                 Close
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={(e) => {
+                  this.handleConfirmCheckModal();
+                }}
+              >
+                Conferma
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal
+            show={this.state.confirmCheckModalShow}
+            onHide={this.handleConfirmCheckModal}
+          >
+            <Modal.Header>
+              {" "}
+              <h3>Non Confermato!</h3>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="row">Sicuro di confermare?</div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={(e) => {
+                  this.handleConfirmCheckModal();
+                }}
+              >
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                onClick={(e) => {
+                  this.handleConfirmCheckModal();
+                  this.handleConfirm();
+                }}
+              >
+                Conferma
               </Button>
             </Modal.Footer>
           </Modal>

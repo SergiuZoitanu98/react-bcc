@@ -24,3 +24,23 @@ table {
   margin: 0 auto;
   max-width: 68%;
 }
+.form-check-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+}
+.form-check-input {
+  position: relative;
+}
+form {
+  width: 100%;
+  padding: 20px;
+}
+.form-check-wrapper input {
+  order: 2;
+}
+.form-check-wrapper label {
+  order: 1;
+}
