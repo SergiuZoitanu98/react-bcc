@@ -4,7 +4,6 @@ import Navbar from "./common/Navbar";
 import axios from "axios";
 import UserTable from "./userTable";
 import UserForm from "./userForm";
-import UnconfirmedModalBody from "./unconfiremdModalBody";
 import config from "../config.json";
 export class RicercaClienti extends Component {
   state = {
@@ -37,6 +36,7 @@ export class RicercaClienti extends Component {
           (date.getMonth() + 1) +
           "-" +
           date.getDate();
+
         //da togliere stati duplicati
         this.setState({ clients: [] });
         this.setState({ clients: response.data });
@@ -97,14 +97,28 @@ export class RicercaClienti extends Component {
 
   handleConfirm = () => {
     axios
-      .post(config.apiPostCliente, this.state.selectedClient, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("TOKEN"),
+      .post(
+        config.apiPostCliente,
+
+        {
+          id: this.state.selectedClient.id,
+          telefono: !!this.state.selectedClient.telefono,
+          email: !!this.state.selectedClient.email,
+          p1: this.state.selectedClient.p1,
+          p2: this.state.selectedClient.p1,
+          p3: this.state.selectedClient.p3,
+          p4: this.state.selectedClient.p4,
+          p5: this.state.selectedClient.p5,
+          p6: this.state.selectedClient.p6,
+          firma: this.state.selectedClient.firma,
         },
-      })
-      .then((response) => {
-        console.log(response);
-      })
+        {
+          headers: {
+            Authorization: localStorage.getItem("TOKEN"),
+          },
+        }
+      )
+      .then((response) => {})
       .catch((error) => {
         // handle error
         console.log(error);
@@ -175,7 +189,7 @@ export class RicercaClienti extends Component {
             <Modal.Body>
               <div className="row">
                 {this.state.selectedClient && (
-                  <form action={this.handleSubmit}>
+                  <form onSubmit={this.handleConfirm}>
                     <div className="container-fluid">
                       <h5>NAG</h5>
                       <p>{this.state.selectedClient.nag}</p>
@@ -187,13 +201,15 @@ export class RicercaClienti extends Component {
                       <div className="form-check form-check-wrapper">
                         <input
                           className="form-check-input "
-                          type="text"
-                          value={this.state.selectedClient.telefono}
+                          type="checkbox"
                           id="telefono"
                           name="telefono"
                           onChange={(e) => {
-                            this.handleChange(e.currentTarget);
+                            this.handleChange(e.currentTarget, true);
                           }}
+                          checked={
+                            this.state.selectedClient.telefono ? "checked" : ""
+                          }
                         />
                         <label className="form-check-label" htmlFor="telefono">
                           <h5>Numero di telefono</h5>
@@ -204,13 +220,15 @@ export class RicercaClienti extends Component {
                       <div className="form-check form-check-wrapper">
                         <input
                           className="form-check-input"
-                          type="email"
-                          value={this.state.selectedClient.email}
+                          type="checkbox"
                           id="email"
                           name="email"
                           onChange={(e) => {
-                            this.handleChange(e.currentTarget);
+                            this.handleChange(e.currentTarget, true);
                           }}
+                          checked={
+                            this.state.selectedClient.email ? "checked" : ""
+                          }
                         />
 
                         <label className="form-check-label" htmlFor="email">
@@ -220,7 +238,7 @@ export class RicercaClienti extends Component {
                       </div>
                       <br />
                       <h5>Privacy</h5>
-                      {[1, 2, 3, 4, 5, 6, 7].map((privacyNumber) => {
+                      {[1, 2, 3, 4, 5, 6].map((privacyNumber) => {
                         return (
                           <div
                             key={privacyNumber}
@@ -247,6 +265,24 @@ export class RicercaClienti extends Component {
                         );
                       })}
                       <br />
+                      <div className="form-check form-check-wrapper">
+                        <input
+                          className="form-check-input "
+                          type="checkbox"
+                          id="firma"
+                          name="firma"
+                          onChange={(e) => {
+                            this.handleChange(e.currentTarget, true);
+                          }}
+                          checked={
+                            this.state.selectedClient.firma ? "checked" : ""
+                          }
+                        />
+                        <label className="form-check-label" htmlFor="firma">
+                          <h5>Firma</h5>
+                          {this.state.selectedClient.firma}
+                        </label>
+                      </div>
                     </div>
                   </form>
                 )}

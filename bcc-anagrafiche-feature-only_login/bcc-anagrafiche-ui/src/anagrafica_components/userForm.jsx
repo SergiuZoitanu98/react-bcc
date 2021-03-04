@@ -9,13 +9,12 @@ class UserForm extends Component {
     handleRicerca: this.props.handleRicerca,
     filiali: [],
   };
+
   handleSubmit = async (e) => {
     e.preventDefault();
     this.state.handleRicerca({
       nag: this.state.clientDetails.nag,
       branch: this.state.clientDetails.branch,
-      nome: this.state.clientDetails.nome,
-      dataNascita: this.state.clientDetails.dataNascita,
     });
   };
 

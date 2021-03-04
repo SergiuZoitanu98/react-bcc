@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Modal, Button } from "react-bootstrap";
 class UnconfirmedModalBody extends Component {
   state = {
     client: this.props.client,
