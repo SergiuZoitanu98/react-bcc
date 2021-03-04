@@ -182,15 +182,14 @@ export class RicercaClienti extends Component {
             show={this.state.modalUnconfirmed}
             onHide={this.handleModalUnconfirmed}
           >
-            <Modal.Header>
-              {" "}
-              <h3>Non Confermato!</h3>
-            </Modal.Header>
             <Modal.Body>
               <div className="row">
                 {this.state.selectedClient && (
                   <form onSubmit={this.handleConfirm}>
                     <div className="container-fluid">
+                      <p> {this.state.selectedClient.nome}</p>
+                      <p className="float-right">Campi modificabili</p>
+                      <hr />
                       <h5>NAG</h5>
                       <p>{this.state.selectedClient.nag}</p>
                       <h5>Nome di battesimo</h5>
@@ -204,9 +203,7 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="telefono"
                           name="telefono"
-                          onChange={(e) => {
-                            this.handleChange(e.currentTarget, true);
-                          }}
+                          disabled="disabled"
                           checked={
                             this.state.selectedClient.telefono ? "checked" : ""
                           }
@@ -223,9 +220,7 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="email"
                           name="email"
-                          onChange={(e) => {
-                            this.handleChange(e.currentTarget, true);
-                          }}
+                          disabled="disabled"
                           checked={
                             this.state.selectedClient.email ? "checked" : ""
                           }
@@ -254,9 +249,11 @@ export class RicercaClienti extends Component {
                                   ? "checked"
                                   : ""
                               }
-                              onChange={(e) => {
+                              disabled="disabled"
+
+                              /*  onChange={(e) => {
                                 this.handleChange(e.currentTarget, true);
-                              }}
+                              }}*/
                             />
                             <label className="form-check-label" htmlFor="p1">
                               Privacy {privacyNumber}
@@ -271,9 +268,10 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="firma"
                           name="firma"
-                          onChange={(e) => {
+                          disabled="disabled"
+                          /* onChange={(e) => {
                             this.handleChange(e.currentTarget, true);
-                          }}
+                          }}*/
                           checked={
                             this.state.selectedClient.firma ? "checked" : ""
                           }

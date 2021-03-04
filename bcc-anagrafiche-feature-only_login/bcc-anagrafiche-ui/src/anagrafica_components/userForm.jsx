@@ -86,7 +86,12 @@ class UserForm extends Component {
               />
             </div>
             <div className="col text-center">
-              <button className="btn btn-primary mt-2">submit</button>
+              <button
+                disabled={!clientDetails.nag}
+                className="btn btn-primary mt-2"
+              >
+                submit
+              </button>
             </div>
           </form>
         </div>
