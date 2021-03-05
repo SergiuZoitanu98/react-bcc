@@ -12,8 +12,8 @@ class UserTable extends Component {
             <th scope="col">Cab</th>
             <th scope="col">Nag</th>
             <th scope="col">Nome</th>
-            <th scope="col">dataNascita</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Data di nascita</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -25,14 +25,18 @@ class UserTable extends Component {
                 <td>{client.nome}</td>
                 <td>{client.dataNascita}</td>
                 <td>
-                  <button
+                  <li
                     onClick={() => {
                       this.state.checkClient(client);
                     }}
-                    className="btn btn-success"
+                    className={
+                      this.state.checkClient
+                        ? "fa fa-search fa-lg"
+                        : "fa fa-pencil fa-lg"
+                    }
                   >
-                    Details
-                  </button>
+                    Dettagli
+                  </li>
                 </td>
               </tr>
             );

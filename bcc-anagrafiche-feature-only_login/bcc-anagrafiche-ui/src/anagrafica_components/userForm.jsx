@@ -33,7 +33,6 @@ class UserForm extends Component {
     };
     axios.get(config.apiFilialiEndpoint, conf).then((response) => {
       this.setState({ filiali: response.data });
-      console.log(response.data);
     });
   };
 
@@ -52,7 +51,11 @@ class UserForm extends Component {
               >
                 <option hidden>Seleziona Filiale</option>
                 {this.state.filiali.map((filiale) => {
-                  return <option value={filiale.id}>{filiale.nome}</option>;
+                  return (
+                    <option key={filiale.id} value={filiale.id}>
+                      {filiale.nome}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -90,7 +93,7 @@ class UserForm extends Component {
                 disabled={!clientDetails.nag}
                 className="btn btn-primary mt-2"
               >
-                submit
+                Cerca
               </button>
             </div>
           </form>

@@ -27,6 +27,16 @@ class App extends Component {
       
       
       */
+      if (
+        this.props.location.pathname === '/' ||
+        this.props.location.pathname === '' ||
+        this.props.location.pathname === window.defConfigurations.url_prefix
+      ) {
+        localStorage.removeItem('TOKEN');
+        this.props.history.replace(
+          window.defConfigurations.url_prefix + ROUTES.LOGIN
+        );
+      }
      for (let api in config) {
       config[api] = config[api].replace(
         "[REACT_APP_URL_JAVA]",
@@ -56,7 +66,7 @@ class App extends Component {
         if(roles.length === 1 && roles[0].authority === USER_TYPE.USER){
           this.props.history.replace(window.defConfigurations.url_prefix + ROUTES.RICERCA_CLIENTI);
         } else {
-          this.props.history.replace(window.defConfigurations.url_prefix + ROUTES.RICERCA_CLIENTI);
+          this.props.history.replace(window.defConfigurations.url_prefix + ROUTES.IMPORTA_CLIENTI);
         }
      }
     )

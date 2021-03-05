@@ -40,7 +40,6 @@ export class RicercaClienti extends Component {
         //da togliere stati duplicati
         this.setState({ clients: [] });
         this.setState({ clients: response.data });
-        console.log(this.state.clients);
       })
       .catch((error) => {
         // handle error
@@ -81,13 +80,13 @@ export class RicercaClienti extends Component {
 
   handleChange = (input, isCheckbox) => {
     const client = { ...this.state.selectedClient };
-    console.log(input.name);
+
     if (isCheckbox) {
       client[input.name] = input.checked;
     } else {
       client[input.name] = input.value;
     }
-    console.log(client);
+
     this.setState({ selectedClient: client });
   };
 
@@ -146,8 +145,10 @@ export class RicercaClienti extends Component {
             onHide={this.handleModalAlreadyConfirmed}
           >
             <Modal.Header>
-              {" "}
-              <h3>Attenzione!</h3>
+              <h3>
+                {" "}
+                {this.state.selectedClient && this.state.selectedClient.nome}
+              </h3>
             </Modal.Header>
             <Modal.Body>
               <p>
@@ -203,10 +204,12 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="telefono"
                           name="telefono"
-                          disabled="disabled"
                           checked={
                             this.state.selectedClient.telefono ? "checked" : ""
                           }
+                          onChange={(e) => {
+                            this.handleChange(e.currentTarget, true);
+                          }}
                         />
                         <label className="form-check-label" htmlFor="telefono">
                           <h5>Numero di telefono</h5>
@@ -220,10 +223,12 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="email"
                           name="email"
-                          disabled="disabled"
                           checked={
                             this.state.selectedClient.email ? "checked" : ""
                           }
+                          onChange={(e) => {
+                            this.handleChange(e.currentTarget, true);
+                          }}
                         />
 
                         <label className="form-check-label" htmlFor="email">
@@ -249,11 +254,9 @@ export class RicercaClienti extends Component {
                                   ? "checked"
                                   : ""
                               }
-                              disabled="disabled"
-
-                              /*  onChange={(e) => {
+                              onChange={(e) => {
                                 this.handleChange(e.currentTarget, true);
-                              }}*/
+                              }}
                             />
                             <label className="form-check-label" htmlFor="p1">
                               Privacy {privacyNumber}
@@ -268,10 +271,9 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="firma"
                           name="firma"
-                          disabled="disabled"
-                          /* onChange={(e) => {
+                          onChange={(e) => {
                             this.handleChange(e.currentTarget, true);
-                          }}*/
+                          }}
                           checked={
                             this.state.selectedClient.firma ? "checked" : ""
                           }
@@ -324,7 +326,9 @@ export class RicercaClienti extends Component {
                 variant="primary"
                 onClick={(e) => {
                   this.handleConfirmCheckModal();
+                  this.handleModalUnconfirmed();
                   this.handleConfirm();
+                  this.handleModalAlreadyConfirmed();
                 }}
               >
                 Conferma
