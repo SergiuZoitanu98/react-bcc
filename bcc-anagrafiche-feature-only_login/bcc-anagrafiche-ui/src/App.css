@@ -17,18 +17,55 @@
   color: white;
 }
 
+.btn-success {
+  color: #fff;
+  background-color: #17c5b7;
+  border-color: #17c5b7;
+}
+.btn-success:hover {
+  background-color: #17c5b7;
+  border-color: #17c5b7;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #17c5b7;
+  border-color: #17c5b7;
+}
+.btn-primary:hover {
+  background-color: #17c5b7;
+  border-color: #17c5b7;
+}
+
+.btn-danger {
+  color: #fff;
+  background-color: #17c5b7;
+  border-color: #17c5b7;
+}
+.btn-danger:hover {
+  background-color: #17c5b7;
+  border-color: #17c5b7;
+}
+
 .App-link {
   color: #09d3ac;
 }
 
-body, html {
+body,
+html {
   height: 100%;
   background-repeat: no-repeat;
   font-family: Arial !important;
 }
 
 .backgroundLogin {
-  background-color: #b3ce27;
+  background: rgb(13, 230, 223);
+  background: linear-gradient(
+    24deg,
+    rgba(13, 230, 223, 1) 0%,
+    rgba(67, 156, 157, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
 }
 
 .container {
@@ -42,18 +79,17 @@ body, html {
 
 .card-container {
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   width: 60%;
-  border: 1px #b3ce27 solid;
+
   height: 70vh;
 }
 
 .containerOperation {
-  border: 1px #b3ce27 solid;
   height: 30vh;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   flex-flow: row nowrap;
   width: 50%;
@@ -69,7 +105,6 @@ body, html {
   width: 27%;
   height: 18vh;
   margin-bottom: 4%;
-  border: 1px solid #b3ce27;
 }
 
 .form-signin {
@@ -90,7 +125,7 @@ body, html {
   align-items: center;
 }
 
-.btn-login{
+.btn-login {
   width: 30%;
 }
 
@@ -110,7 +145,7 @@ body, html {
   border-radius: 3px;
 }
 
-.commondFieldset{
+.commondFieldset {
   border: 1px black solid;
   padding: 20px;
   margin-left: 20px;
@@ -120,7 +155,7 @@ body, html {
   border-radius: 3px;
 }
 
-.commondFieldsetLabel{
+.commondFieldsetLabel {
   margin-left: 20px;
 }
 
@@ -132,11 +167,13 @@ body, html {
   border-radius: 3px;
 }
 
-.labelForm{
+.labelForm {
   margin-top: 8px;
 }
 
-.bottoneRicerca {margin-top: 25px;}
+.bottoneRicerca {
+  margin-top: 25px;
+}
 
 .verifyRegistry {
   border: 1px black solid;

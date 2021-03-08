@@ -5,6 +5,9 @@ import axios from "axios";
 import UserTable from "./userTable";
 import UserForm from "./userForm";
 import config from "../config.json";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 export class RicercaClienti extends Component {
   state = {
     modalDetailsVisible: false,
@@ -37,13 +40,12 @@ export class RicercaClienti extends Component {
           "-" +
           date.getDate();
 
-        //da togliere stati duplicati
         this.setState({ clients: [] });
         this.setState({ clients: response.data });
       })
       .catch((error) => {
         // handle error
-        console.log(error);
+        toast("Filiale e Nag sono richiesti!");
       });
   };
 
@@ -76,6 +78,7 @@ export class RicercaClienti extends Component {
     } else {
       this.setState({ modalUnconfirmed: true });
     }
+    console.log(client);
   };
 
   handleChange = (input, isCheckbox) => {
@@ -86,8 +89,6 @@ export class RicercaClienti extends Component {
     } else {
       client[input.name] = input.value;
     }
-
-    this.setState({ selectedClient: client });
   };
 
   handleConfirmCheckModal = () => {
@@ -120,12 +121,14 @@ export class RicercaClienti extends Component {
       .then((response) => {})
       .catch((error) => {
         // handle error
-        console.log(error);
+        toast("something unexpected happened");
       });
   };
+
   render() {
     return (
       <>
+        <ToastContainer />
         <div id="main">
           <Navbar></Navbar>
           <h3 className=" mt-2">RICERCA CLIENTI</h3>
@@ -152,7 +155,7 @@ export class RicercaClienti extends Component {
             </Modal.Header>
             <Modal.Body>
               <p>
-                L'anagrafica del cliente è già stata confermata in data:
+                L'anagrafica del cliente è stata confermata in data:
                 <b>
                   {this.state.selectedClient &&
                     this.state.selectedClient.filiali.lastModify}
@@ -172,7 +175,7 @@ export class RicercaClienti extends Component {
                 variant="secondary"
                 onClick={this.handleModalAlreadyConfirmed}
               >
-                Close
+                Chiudi
               </Button>
             </Modal.Footer>
           </Modal>
@@ -189,7 +192,7 @@ export class RicercaClienti extends Component {
                   <form onSubmit={this.handleConfirm}>
                     <div className="container-fluid">
                       <p> {this.state.selectedClient.nome}</p>
-                      <p className="float-right">Campi modificabili</p>
+                      <h4 className="float-right">Campi modificabili</h4>
                       <hr />
                       <h5>NAG</h5>
                       <p>{this.state.selectedClient.nag}</p>
@@ -204,9 +207,6 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="telefono"
                           name="telefono"
-                          checked={
-                            this.state.selectedClient.telefono ? "checked" : ""
-                          }
                           onChange={(e) => {
                             this.handleChange(e.currentTarget, true);
                           }}
@@ -223,9 +223,6 @@ export class RicercaClienti extends Component {
                           type="checkbox"
                           id="email"
                           name="email"
-                          checked={
-                            this.state.selectedClient.email ? "checked" : ""
-                          }
                           onChange={(e) => {
                             this.handleChange(e.currentTarget, true);
                           }}
@@ -249,21 +246,28 @@ export class RicercaClienti extends Component {
                               type="checkbox"
                               id={`id-${privacyNumber}`}
                               name={`p${privacyNumber}`}
-                              checked={
-                                this.state.selectedClient[`p${privacyNumber}`]
-                                  ? "checked"
-                                  : ""
-                              }
                               onChange={(e) => {
                                 this.handleChange(e.currentTarget, true);
                               }}
                             />
-                            <label className="form-check-label" htmlFor="p1">
-                              Privacy {privacyNumber}
+
+                            <label
+                              className="form-check-label"
+                              htmlFor={"id-" + privacyNumber}
+                            >
+                              Privacy {privacyNumber} -{" "}
+                              {this.state.selectedClient[
+                                `p${privacyNumber}`
+                              ] ? (
+                                <i className="fa fa-check"></i>
+                              ) : (
+                                <i className="fa fa-times"></i>
+                              )}
                             </label>
                           </div>
                         );
                       })}
+
                       <br />
                       <div className="form-check form-check-wrapper">
                         <input
@@ -274,9 +278,6 @@ export class RicercaClienti extends Component {
                           onChange={(e) => {
                             this.handleChange(e.currentTarget, true);
                           }}
-                          checked={
-                            this.state.selectedClient.firma ? "checked" : ""
-                          }
                         />
                         <label className="form-check-label" htmlFor="firma">
                           <h5>Firma</h5>
@@ -290,10 +291,10 @@ export class RicercaClienti extends Component {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={this.handleModalUnconfirmed}>
-                Close
+                Chiudi
               </Button>
               <Button
-                variant="secondary"
+                variant="success"
                 onClick={(e) => {
                   this.handleConfirmCheckModal();
                 }}
@@ -303,15 +304,13 @@ export class RicercaClienti extends Component {
             </Modal.Footer>
           </Modal>
           <Modal
+            className="modal-confirm"
             show={this.state.confirmCheckModalShow}
             onHide={this.handleConfirmCheckModal}
           >
-            <Modal.Header>
-              {" "}
-              <h3>Non Confermato!</h3>
-            </Modal.Header>
+            <Modal.Header> </Modal.Header>
             <Modal.Body>
-              <div className="row">Sicuro di confermare?</div>
+              <p>Sicuro di confermare?</p>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -320,15 +319,15 @@ export class RicercaClienti extends Component {
                   this.handleConfirmCheckModal();
                 }}
               >
-                Close
+                Chiudi
               </Button>
               <Button
-                variant="primary"
+                variant="success"
                 onClick={(e) => {
                   this.handleConfirmCheckModal();
                   this.handleModalUnconfirmed();
-                  this.handleConfirm();
                   this.handleModalAlreadyConfirmed();
+                  this.handleConfirm();
                 }}
               >
                 Conferma

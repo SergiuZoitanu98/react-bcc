@@ -13,7 +13,7 @@ class UserTable extends Component {
             <th scope="col">Nag</th>
             <th scope="col">Nome</th>
             <th scope="col">Data di nascita</th>
-            <th scope="col"></th>
+            <th scope="col">Dettagli</th>
           </tr>
         </thead>
         <tbody>
@@ -30,13 +30,11 @@ class UserTable extends Component {
                       this.state.checkClient(client);
                     }}
                     className={
-                      this.state.checkClient
+                      client.confermato
                         ? "fa fa-search fa-lg"
                         : "fa fa-pencil fa-lg"
                     }
-                  >
-                    Dettagli
-                  </li>
+                  ></li>
                 </td>
               </tr>
             );

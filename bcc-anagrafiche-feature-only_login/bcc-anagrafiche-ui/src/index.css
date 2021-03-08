@@ -44,3 +44,10 @@ form {
 .form-check-wrapper label {
   order: 1;
 }
+.modal-confirm {
+  position: fixed;
+  right: 30px;
+  top: 30px;
+  width: 300px;
+  left: auto;
+}

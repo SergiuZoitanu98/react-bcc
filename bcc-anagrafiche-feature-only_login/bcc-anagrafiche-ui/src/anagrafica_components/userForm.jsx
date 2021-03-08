@@ -1,17 +1,44 @@
 import React, { Component } from "react";
 import axios from "axios";
 import config from "../config.json";
-
+import Joi from "joi-browser";
+import { toast } from "react-toastify";
 class UserForm extends Component {
   state = {
     clientDetails: [],
     clients: [],
     handleRicerca: this.props.handleRicerca,
     filiali: [],
+    inputFields: {
+      filiali: "",
+      nag: "",
+    },
+    errors: {},
+  };
+
+  schema = {
+    nag: Joi.string()
+
+      .min(3)
+      .max(6)
+      .required()
+      .label("NAG"),
+  };
+
+  validate = () => {
+    const result = Joi.validate(this.state.inputFields, this.schema, {
+      abortEarly: false,
+    });
+    if (!result.error) return null;
+    const errors = {};
+    for (let item of result.error.details) errors[item.path[0]] = item.message;
+    return errors;
   };
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const errors = this.validate();
+    this.setState({ errors: errors || {} });
     this.state.handleRicerca({
       nag: this.state.clientDetails.nag,
       branch: this.state.clientDetails.branch,
@@ -21,6 +48,7 @@ class UserForm extends Component {
   handleChange = ({ currentTarget: input }) => {
     const clientDetails = { ...this.state.clientDetails };
     clientDetails[input.name] = input.value;
+
     this.setState({ clientDetails });
   };
 
@@ -48,6 +76,7 @@ class UserForm extends Component {
                 className="form-control "
                 onChange={this.handleChange}
                 name="branch"
+                error={this.state.errors.filialeId}
               >
                 <option hidden>Seleziona Filiale</option>
                 {this.state.filiali.map((filiale) => {
@@ -67,6 +96,7 @@ class UserForm extends Component {
                 placeholder="NAG"
                 type="text"
                 className="form-control "
+                error={this.state.errors.nag}
               />
             </div>
             <div className="col-3 ">
@@ -90,7 +120,7 @@ class UserForm extends Component {
             </div>
             <div className="col text-center">
               <button
-                disabled={!clientDetails.nag}
+                //disabled={!clientDetails.nag}
                 className="btn btn-primary mt-2"
               >
                 Cerca
