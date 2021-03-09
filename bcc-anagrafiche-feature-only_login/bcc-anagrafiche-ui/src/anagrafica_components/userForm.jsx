@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import config from "../config.json";
 import Joi from "joi-browser";
-import { toast } from "react-toastify";
+
 class UserForm extends Component {
   state = {
     clientDetails: [],
@@ -68,66 +68,63 @@ class UserForm extends Component {
     const { clientDetails } = this.state;
 
     return (
-      <div className="container-fluid mt-4 mb-4 ">
-        <div className="row">
-          <form className="form-inline" onSubmit={this.handleSubmit}>
-            <div className="col-3 bootstrap-select-wrapper ">
-              <select
-                className="form-control "
-                onChange={this.handleChange}
-                name="branch"
-                error={this.state.errors.filialeId}
-              >
-                <option hidden>Seleziona Filiale</option>
-                {this.state.filiali.map((filiale) => {
-                  return (
-                    <option key={filiale.id} value={filiale.id}>
-                      {filiale.nome}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="col-3 ">
-              <input
-                name="nag"
-                value={clientDetails.nag || ""}
-                onChange={this.handleChange}
-                placeholder="NAG"
-                type="text"
-                className="form-control "
-                error={this.state.errors.nag}
-              />
-            </div>
-            <div className="col-3 ">
-              <input
-                value={clientDetails.nome || ""}
-                onChange={this.handleChange}
-                name="nome"
-                placeholder="Nome"
-                type="text"
-                className="form-control "
-              />
-            </div>
-            <div className="col-3 ">
-              <input
-                value={clientDetails.dataNascita || ""}
-                onChange={this.handleChange}
-                type="date"
-                name="dataNascita"
-                className="form-control "
-              />
-            </div>
-            <div className="col text-center">
-              <button
-                //disabled={!clientDetails.nag}
-                className="btn btn-primary mt-2"
-              >
-                Cerca
-              </button>
-            </div>
-          </form>
-        </div>
+      <div className="row">
+        <form className="form-inline" onSubmit={this.handleSubmit}>
+          <div className="col-3">
+            <select
+              className="form-control "
+              onChange={this.handleChange}
+              name="branch"
+              error={this.state.errors.filialeId}
+            >
+              <option hidden>Seleziona Filiale</option>
+              {this.state.filiali.map((filiale) => {
+                return (
+                  <option key={filiale.id} value={filiale.id}>
+                    {filiale.nome}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="col-3 ">
+            <input
+              name="nag"
+              value={clientDetails.nag || ""}
+              onChange={this.handleChange}
+              placeholder="NAG"
+              type="text"
+              className="form-control "
+              error={this.state.errors.nag}
+            />
+          </div>
+          <div className="col-3 ">
+            <input
+              value={clientDetails.nome || ""}
+              onChange={this.handleChange}
+              name="nome"
+              placeholder="Nome"
+              type="text"
+              className="form-control "
+            />
+          </div>
+          <div className="col-3 ">
+            <input
+              value={clientDetails.dataNascita || ""}
+              onChange={this.handleChange}
+              type="date"
+              name="dataNascita"
+              className="form-control ml-0"
+            />
+
+            <button
+              disabled={!clientDetails.nag}
+              className="btn btn-primary ml-2"
+            >
+              Cerca
+            </button>
+          </div>
+        </form>
       </div>
     );
   }

@@ -15,9 +15,11 @@ class Navbar extends Component {
       <nav className="navbar navbar-light bg-light">
         <div className="row col-md-12">
           <span className="navbar-brand mb-0 h1 col-md-2 text-left">
-            {this.props.username
-              ? this.props.username
-              : localStorage.getItem("USERNAME")}
+            <i className="fa fa-user">
+              {this.props.username
+                ? this.props.username
+                : localStorage.getItem("USERNAME").toUpperCase()}
+            </i>
           </span>
           <Link
             className={`nav-link col-md-2 noPadding navButton ${
@@ -35,6 +37,7 @@ class Navbar extends Component {
           >
             Report
           </Link>
+
           <button
             className="btn btn-danger col-md-1 offset-md-6"
             onClick={logout}

@@ -34,18 +34,18 @@ export class RicercaClienti extends Component {
       .then((response) => {
         var date = new Date(response.data[0].filiali.lastModify);
         response.data[0].filiali.lastModify =
-          date.getFullYear() +
+          date.getDay() +
           "-" +
           (date.getMonth() + 1) +
           "-" +
-          date.getDate();
+          date.getFullYear();
 
         this.setState({ clients: [] });
         this.setState({ clients: response.data });
       })
       .catch((error) => {
         // handle error
-        toast("Filiale e Nag sono richiesti!");
+        toast.error("Nessuna corrispondenza trovata");
       });
   };
 
@@ -94,6 +94,9 @@ export class RicercaClienti extends Component {
   handleConfirmCheckModal = () => {
     this.setState({ confirmCheckModalShow: !this.state.confirmCheckModalShow });
   };
+  displayMessage = () => {
+    toast.success("Cliente confermato");
+  };
 
   handleConfirm = () => {
     axios
@@ -131,7 +134,7 @@ export class RicercaClienti extends Component {
         <ToastContainer />
         <div id="main">
           <Navbar></Navbar>
-          <h3 className=" mt-2">RICERCA CLIENTI</h3>
+          <h3 className="text-left pt-2 pl-2">RICERCA CLIENTI</h3>
           <UserForm handleRicerca={this.handleRicerca} />
 
           {this.state.clients.length > 0 && (
@@ -281,7 +284,11 @@ export class RicercaClienti extends Component {
                         />
                         <label className="form-check-label" htmlFor="firma">
                           <h5>Firma</h5>
-                          {this.state.selectedClient.firma}
+                          {this.state.selectedClient.firma ? (
+                            <i className="fa fa-check"></i>
+                          ) : (
+                            <i className="fa fa-times"></i>
+                          )}
                         </label>
                       </div>
                     </div>
@@ -301,37 +308,35 @@ export class RicercaClienti extends Component {
               >
                 Conferma
               </Button>
-            </Modal.Footer>
-          </Modal>
-          <Modal
-            className="modal-confirm"
-            show={this.state.confirmCheckModalShow}
-            onHide={this.handleConfirmCheckModal}
-          >
-            <Modal.Header> </Modal.Header>
-            <Modal.Body>
-              <p>Sicuro di confermare?</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant="secondary"
-                onClick={(e) => {
-                  this.handleConfirmCheckModal();
-                }}
-              >
-                Chiudi
-              </Button>
-              <Button
-                variant="success"
-                onClick={(e) => {
-                  this.handleConfirmCheckModal();
-                  this.handleModalUnconfirmed();
-                  this.handleModalAlreadyConfirmed();
-                  this.handleConfirm();
-                }}
-              >
-                Conferma
-              </Button>
+              {this.state.confirmCheckModalShow ? (
+                <div>
+                  Sicuro di voler confermare?
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm ml-2"
+                    onClick={(e) => {
+                      this.handleConfirmCheckModal();
+                      this.handleModalUnconfirmed();
+                      this.handleModalAlreadyConfirmed();
+                      this.handleConfirm();
+                      this.displayMessage();
+                    }}
+                  >
+                    Si
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm ml-2"
+                    onClick={(e) => {
+                      this.handleConfirmCheckModal();
+                    }}
+                  >
+                    No
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
             </Modal.Footer>
           </Modal>
         </div>

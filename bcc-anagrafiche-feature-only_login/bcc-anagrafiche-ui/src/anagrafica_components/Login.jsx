@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import { ROUTES } from "../anagrafica_components/common/Constants";
-
 export class Login extends Component {
   state = {
     login: {
@@ -35,7 +34,11 @@ export class Login extends Component {
         <div className="container">
           <div className="card card-container">
             <div className="login-icon">
-              <i className="fa fa-user fa-5x" />
+              <img
+                src="https://www.ireth.it/wp-content/uploads/2016/05/BCC_News.png"
+                className="img-responsive"
+                alt=""
+              />
             </div>
             <form className="form-signin">
               <input
