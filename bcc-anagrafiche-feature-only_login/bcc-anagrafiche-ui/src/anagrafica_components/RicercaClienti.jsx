@@ -19,6 +19,7 @@ export class RicercaClienti extends Component {
     selectedClient: null,
     checked: false,
     filiali: [],
+    show: false,
   };
 
   handleRicerca = (data) => {
@@ -32,13 +33,14 @@ export class RicercaClienti extends Component {
     axios
       .get(config.apiClienteEndpoint, conf)
       .then((response) => {
-        var date = new Date(response.data[0].filiali.lastModify);
-        response.data[0].filiali.lastModify =
-          date.getDay() +
-          "-" +
-          (date.getMonth() + 1) +
-          "-" +
-          date.getFullYear();
+        for (let i = 0; i < response.data.length; i++) {
+          let date = new Date(response.data[i].lastModify);
+          response.data[i].lastModify = date.toLocaleDateString();
+        }
+        for (let i = 0; i < response.data.length; i++) {
+          let date2 = new Date(response.data[i].dataNascita);
+          response.data[i].dataNascita = date2.toLocaleDateString();
+        }
 
         this.setState({ clients: [] });
         this.setState({ clients: response.data });
@@ -96,6 +98,15 @@ export class RicercaClienti extends Component {
   };
   displayMessage = () => {
     toast.success("Cliente confermato");
+  };
+
+  hideButtons = () => {
+    var x = document.getElementById("myDiv");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
   };
 
   handleConfirm = () => {
@@ -157,11 +168,12 @@ export class RicercaClienti extends Component {
               </h3>
             </Modal.Header>
             <Modal.Body>
+              {" "}
               <p>
                 L'anagrafica del cliente è stata confermata in data:
                 <b>
                   {this.state.selectedClient &&
-                    this.state.selectedClient.filiali.lastModify}
+                    this.state.selectedClient.lastModify}
                 </b>
               </p>
               <p>
@@ -297,17 +309,24 @@ export class RicercaClienti extends Component {
               </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleModalUnconfirmed}>
-                Chiudi
-              </Button>
-              <Button
-                variant="success"
-                onClick={(e) => {
-                  this.handleConfirmCheckModal();
-                }}
-              >
-                Conferma
-              </Button>
+              <div id="myDiv">
+                <Button
+                  className="mr-2"
+                  variant="success"
+                  onClick={(e) => {
+                    this.handleConfirmCheckModal();
+                    this.hideButtons();
+                  }}
+                >
+                  Conferma
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={this.handleModalUnconfirmed}
+                >
+                  Chiudi
+                </Button>
+              </div>
               {this.state.confirmCheckModalShow ? (
                 <div>
                   Sicuro di voler confermare?
@@ -329,6 +348,7 @@ export class RicercaClienti extends Component {
                     class="btn btn-secondary btn-sm ml-2"
                     onClick={(e) => {
                       this.handleConfirmCheckModal();
+                      this.hideButtons();
                     }}
                   >
                     No
